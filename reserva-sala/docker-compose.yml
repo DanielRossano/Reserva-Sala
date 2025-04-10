@@ -1,0 +1,82 @@
+version: '3'
+services:
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - usuario-service
+      - sala-service
+      - reserva-service
+    networks:
+      - backend
+
+  usuario-service:
+    build: ./usuario-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - db-usuario
+    networks:
+      - backend
+
+  sala-service:
+    build: ./sala-service
+    ports:
+      - "8084:8084"
+    depends_on:
+      - db-sala
+    networks:
+      - backend
+
+  reserva-service:
+    build: ./reserva-service
+    ports:
+      - "8085:8085"
+    depends_on:
+      - db-reserva
+    networks:
+      - backend
+
+  db-usuario:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: usuario_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5433:5432"
+    networks:
+      - backend
+
+  db-sala:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: sala_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5434:5432"
+    networks:
+      - backend
+
+  db-reserva:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: reserva_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5435:5432"
+    networks:
+      - backend
+
+  adminer:
+    image: adminer
+    ports:
+      - "8081:8080"
+    networks:
+      - backend
+
+networks:
+  backend:
