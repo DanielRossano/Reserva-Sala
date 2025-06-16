@@ -1,0 +1,84 @@
+# Set default behavior to automatically normalize line endings.
+* text=auto
+
+# Force batch scripts to always use CRLF line endings so that if a repo is accessed
+# in Windows via a file share from Linux, the scripts will work.
+*.{cmd,[cC][mM][dD]} text eol=crlf
+*.{bat,[bB][aA][tT]} text eol=crlf
+
+# Force bash scripts to always use LF line endings so that if a repo is accessed
+# in Unix via a file share from Windows, the scripts will work.
+*.sh text eol=lf
+
+# Declare files that will always have CRLF line endings on checkout.
+*.sln text eol=crlf
+
+# Denote all files that are truly binary and should not be modified.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.mov binary
+*.mp4 binary
+*.mp3 binary
+*.flv binary
+*.fla binary
+*.swf binary
+*.gz binary
+*.zip binary
+*.7z binary
+*.ttf binary
+*.eot binary
+*.woff binary
+*.woff2 binary
+*.pyc binary
+*.pdf binary
+*.ez binary
+*.jar binary
+*.war binary
+*.ear binary
+*.class binary
+
+# Java source files
+*.java text diff=java
+*.kt text diff=java
+*.gradle text diff=java
+*.xml text
+*.properties text
+*.yml text
+*.yaml text
+
+# Maven wrapper
+mvnw text eol=lf
+mvnw.cmd text eol=crlf
+
+# Configuration files
+*.conf text
+*.config text
+*.ini text
+*.cfg text
+
+# Documentation
+*.md text
+*.txt text
+*.adoc text
+*.textile text
+*.mustache text
+*.csv text
+*.tab text
+*.tsv text
+*.sql text
+
+# Web assets
+*.css text
+*.js text
+*.json text
+*.html text
+*.htm text
+
+# Docker
+Dockerfile text
+*.dockerfile text
+docker-compose*.yml text
+docker-compose*.yaml text

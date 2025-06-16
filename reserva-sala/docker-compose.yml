@@ -1,82 +1,161 @@
-version: '3'
+version: '3.8'
+
 services:
-  api-gateway:
-    build: ./api-gateway
+  # Base de dados
+  mysql-usuario:
+    image: mysql:latest
+    container_name: mysql-usuario-db
     ports:
-      - "8080:8080"
-    depends_on:
-      - usuario-service
-      - sala-service
-      - reserva-service
-    networks:
-      - backend
-
-  usuario-service:
-    build: ./usuario-service
-    ports:
-      - "8083:8083"
-    depends_on:
-      - db-usuario
-    networks:
-      - backend
-
-  sala-service:
-    build: ./sala-service
-    ports:
-      - "8084:8084"
-    depends_on:
-      - db-sala
-    networks:
-      - backend
-
-  reserva-service:
-    build: ./reserva-service
-    ports:
-      - "8085:8085"
-    depends_on:
-      - db-reserva
-    networks:
-      - backend
-
-  db-usuario:
-    image: postgres:latest
+      - "3306:3306"
     environment:
-      POSTGRES_DB: usuario_db
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-    ports:
-      - "5433:5432"
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=123
+      - MYSQL_DATABASE=db_usuario
+      - MYSQL_ROOT_PASSWORD=123
+    volumes:
+      - mysql-usuario-data:/var/lib/mysql
     networks:
-      - backend
+      - app-network
+    restart: unless-stopped
 
-  db-sala:
-    image: postgres:latest
+  mysql-sala:
+    image: mysql:latest
+    container_name: mysql-sala-db
+    ports:
+      - "3307:3306"
     environment:
-      POSTGRES_DB: sala_db
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-    ports:
-      - "5434:5432"
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=123
+      - MYSQL_DATABASE=db_sala
+      - MYSQL_ROOT_PASSWORD=123
+    volumes:
+      - mysql-sala-data:/var/lib/mysql
     networks:
-      - backend
+      - app-network
+    restart: unless-stopped
 
-  db-reserva:
-    image: postgres:latest
+  mysql-reserva:
+    image: mysql:latest
+    container_name: mysql-reserva-db
+    ports:
+      - "3308:3306"
     environment:
-      POSTGRES_DB: reserva_db
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-    ports:
-      - "5435:5432"
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=123
+      - MYSQL_DATABASE=db_reserva
+      - MYSQL_ROOT_PASSWORD=123
+    volumes:
+      - mysql-reserva-data:/var/lib/mysql
     networks:
-      - backend
+      - app-network
+    restart: unless-stopped
 
+  # Message Queue
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: rabbitmq-service
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "admin"
+      RABBITMQ_DEFAULT_PASS: "admin123"
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # Microserviços
+  ms-usuario:
+    build:
+      context: ./ms-usuario
+      dockerfile: Dockerfile
+    container_name: usuario-service
+    ports:
+      - "9001:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-usuario:3306/db_usuario
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: 123
+    depends_on:
+      - mysql-usuario
+      - rabbitmq
+    restart: unless-stopped
+    networks:
+      - app-network
+    
+  ms-sala:
+    build:
+      context: ./ms-sala
+      dockerfile: Dockerfile
+    container_name: sala-service
+    ports:
+      - "9002:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-sala:3306/db_sala
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: 123
+    depends_on:
+      - mysql-sala
+      - rabbitmq
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  ms-reserva:
+    build:
+      context: ./ms-reserva
+      dockerfile: Dockerfile
+    container_name: reserva-service
+    ports:
+      - "9003:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-reserva:3306/db_reserva
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: 123
+    depends_on:
+      - mysql-reserva
+      - rabbitmq
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  # Gateway e Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: api-gateway
+    command: /bin/sh -c "sleep 15 && nginx -g 'daemon off;'"
+    ports:
+      - "8080:80"
+      - "8443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - ms-usuario
+      - ms-sala
+      - ms-reserva
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # Ferramentas de administração
   adminer:
-    image: adminer
+    image: adminer:latest
+    container_name: db-admin
     ports:
       - "8081:8080"
     networks:
-      - backend
+      - app-network
+    restart: unless-stopped
+
+volumes:
+  mysql-usuario-data:
+    driver: local
+  mysql-sala-data:
+    driver: local
+  mysql-reserva-data:
+    driver: local
 
 networks:
-  backend:
+  app-network:
+    driver: bridge
+    name: controle-sala-network
