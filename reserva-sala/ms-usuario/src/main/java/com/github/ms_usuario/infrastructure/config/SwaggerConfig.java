@@ -2,8 +2,6 @@ package com.github.ms_usuario.infrastructure.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.info.Contact;
-import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,19 +25,10 @@ public class SwaggerConfig {
         server3.setUrl("http://localhost/api");
         server3.setDescription("Servidor de Produção via Gateway");
 
-        Contact contact = new Contact()
-                .email("admin@controlesa.com")
-                .name("Equipe de Desenvolvimento")
-                .url("https://github.com/LuizPagliari/controle-sala");
-
-        License license = new License()
-                .name("MIT License")
-                .url("https://opensource.org/licenses/MIT");
 
         Info info = new Info()
                 .title("API de Usuários - Sistema de Controle de Salas")
                 .version("1.0.0")
-                .contact(contact)
                 .description(" API REST para gerenciamento de usuários no sistema de controle de salas.\n\n" +
                            "### Funcionalidades:\n" +
                            "- Cadastro de usuários com validação de CPF\n" +
@@ -52,9 +41,7 @@ public class SwaggerConfig {
                            "2. Clique em **'Try it out'**\n" +
                            "3. Preencha os dados necessários\n" +
                            "4. Clique em **'Execute'**\n\n" +
-                           "### Exemplo de CPF válido: `12345678901`")
-                .termsOfService("http://swagger.io/terms/")
-                .license(license);
+                           "### Exemplo de CPF válido: `12345678901`");
 
         return new OpenAPI()
                 .info(info)
