@@ -31,4 +31,21 @@ public class Reserva {
         this.salaId = salaId;
         this.usuarioId = usuarioId;
     }
+    
+    // Manual getter methods to ensure availability even if Lombok fails
+    public Long getId() {
+        return id;
+    }
+    
+    public DataHora getDataHora() {
+        return dataHora;
+    }
+    
+    public SalaId getSalaId() {
+        return salaId;
+    }
+    
+    public UsuarioId getUsuarioId() {
+        return usuarioId;
+    }
 }

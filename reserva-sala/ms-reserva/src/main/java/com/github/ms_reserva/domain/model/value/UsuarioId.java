@@ -17,4 +17,9 @@ public class UsuarioId {
         }
         this.usuarioId = id;
     }
+    
+    // Manual getter method to ensure availability even if Lombok fails
+    public Long getUsuarioId() {
+        return usuarioId;
+    }
 }

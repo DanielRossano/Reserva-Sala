@@ -17,4 +17,9 @@ public class SalaId {
         }
         this.salaId = id;
     }
+    
+    // Manual getter method to ensure availability even if Lombok fails
+    public Long getSalaId() {
+        return salaId;
+    }
 }

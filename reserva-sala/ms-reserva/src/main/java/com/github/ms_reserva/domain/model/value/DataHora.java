@@ -23,5 +23,9 @@ public class DataHora {
     public boolean isBefore(LocalDateTime outraData) {
         return this.dataHora.isBefore(outraData);
     }
-
+    
+    // Manual getter method to ensure availability even if Lombok fails
+    public LocalDateTime getDataHora() {
+        return dataHora;
+    }
 }

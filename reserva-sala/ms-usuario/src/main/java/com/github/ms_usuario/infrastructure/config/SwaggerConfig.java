@@ -18,7 +18,7 @@ public class SwaggerConfig {
         server1.setDescription("Servidor Direto - Microserviço Usuario");
 
         Server server2 = new Server();
-        server2.setUrl("http://localhost:8080");
+        server2.setUrl("http://localhost:8080/api");
         server2.setDescription("Servidor via Nginx Gateway");
 
         Server server3 = new Server();

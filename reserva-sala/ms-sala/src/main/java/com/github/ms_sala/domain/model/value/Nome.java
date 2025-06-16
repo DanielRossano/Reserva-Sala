@@ -17,5 +17,10 @@ public class Nome {
         }
         this.nome = nome;
     }
+    
+    // Manual getter method to ensure availability even if Lombok fails
+    public String getNome() {
+        return nome;
+    }
 }
 

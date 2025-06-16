@@ -1,5 +1,6 @@
 package com.github.ms_usuario.domain.model.value;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,10 +8,18 @@ import lombok.Setter;
 @Getter
 @Embeddable
 @Setter
+@Schema(description = "Endereço do usuário")
 public class Endereco {
+    @Schema(description = "Cidade", example = "São Paulo")
     private String cidade;
+    
+    @Schema(description = "Estado", example = "SP")
     private String estado;
+    
+    @Schema(description = "CEP", example = "01234-567")
     private String cep;
+    
+    @Schema(description = "Rua", example = "Rua das Flores, 123")
     private String rua;
 
     protected Endereco() {

@@ -32,12 +32,12 @@ public class UsuarioController {
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Usuário criado com sucesso",
-                content = @Content(schema = @Schema(implementation = Usuario.class))),
+                content = @Content(schema = @Schema(implementation = UsuarioResponseDTO.class))),
         @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
         @ApiResponse(responseCode = "409", description = "CPF ou email já existem no sistema")
     })
     @PostMapping
-    public ResponseEntity<Usuario> criarUsuario(
+    public ResponseEntity<UsuarioResponseDTO> criarUsuario(
             @Parameter(description = "Dados do usuário a ser criado", required = true)
             @RequestBody UsuarioRequestDTO userDTO) {
         Usuario usuario = new Usuario(
@@ -46,7 +46,20 @@ public class UsuarioController {
                 new Cpf(userDTO.cpf()),
                 new DataNascimento(userDTO.dataNascimento()),
                 new Endereco(userDTO.endereco().getCidade(), userDTO.endereco().getEstado(), userDTO.endereco().getCep(), userDTO.endereco().getRua())
-        );        return ResponseEntity.ok(usuarioService.criarUsuario(usuario));
+        );
+        
+        Usuario usuarioSalvo = usuarioService.criarUsuario(usuario);
+        
+        UsuarioResponseDTO responseDTO = new UsuarioResponseDTO(
+                usuarioSalvo.getId(),
+                usuarioSalvo.getNome().getNome(),
+                usuarioSalvo.getEmail().getEmail(),
+                usuarioSalvo.getCpf().getCpf(),
+                usuarioSalvo.getDataNascimento().getDataNascimento(),
+                usuarioSalvo.getEndereco()
+        );
+        
+        return ResponseEntity.ok(responseDTO);
     }
 
     @Operation(

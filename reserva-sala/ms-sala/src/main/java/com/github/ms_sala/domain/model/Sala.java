@@ -25,4 +25,17 @@ public class Sala {
         this.nome = nome;
         this.capacidade = capacidade;
     }
+    
+    // Manual getter methods to ensure availability even if Lombok fails
+    public Long getId() {
+        return id;
+    }
+    
+    public Nome getNome() {
+        return nome;
+    }
+    
+    public Capacidade getCapacidade() {
+        return capacidade;
+    }
 }

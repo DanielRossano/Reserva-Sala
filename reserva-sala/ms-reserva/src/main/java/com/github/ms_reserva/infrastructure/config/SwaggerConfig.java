@@ -16,11 +16,11 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI reservationServiceOpenAPI() {
         Server server1 = new Server();
-        server1.setUrl("http://localhost:8082");
+        server1.setUrl("http://localhost:9003");
         server1.setDescription("Servidor Local - Desenvolvimento");
 
         Server server2 = new Server();
-        server2.setUrl("http://localhost/api");
+        server2.setUrl("http://localhost:8080/api");
         server2.setDescription("Servidor via Nginx Gateway");
 
         Contact contact = new Contact()

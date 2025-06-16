@@ -17,4 +17,9 @@ public class Capacidade {
         }
         this.capacidade = capacidade;
     }
+    
+    // Manual getter method to ensure availability even if Lombok fails
+    public int getCapacidade() {
+        return capacidade;
+    }
 }

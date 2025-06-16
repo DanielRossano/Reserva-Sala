@@ -2,6 +2,9 @@ package com.github.ms_sala.infrastructure.rest;
 
 import com.github.ms_sala.application.SalaService;
 import com.github.ms_sala.domain.model.Sala;
+import com.github.ms_sala.domain.model.value.Capacidade;
+import com.github.ms_sala.domain.model.value.Nome;
+import com.github.ms_sala.infrastructure.dto.SalaRequestDTO;
 import com.github.ms_sala.infrastructure.dto.SalaResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -38,8 +41,15 @@ public class SalaController {
     @PostMapping
     public ResponseEntity<SalaResponseDTO> criarSala(
             @Parameter(description = "Dados da sala a ser criada", required = true)
-            @RequestBody Sala sala) {
-        Sala novaSala = salaService.criarSala(sala);        return ResponseEntity.ok(toDTO(novaSala));
+            @RequestBody SalaRequestDTO salaDTO) {
+        
+        Sala sala = new Sala(
+                new Nome(salaDTO.nome()),
+                new Capacidade(salaDTO.capacidade())
+        );
+        
+        Sala novaSala = salaService.criarSala(sala);
+        return ResponseEntity.ok(toDTO(novaSala));
     }
 
     @Operation(

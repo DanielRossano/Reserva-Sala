@@ -27,9 +27,7 @@ docker-compose up --build -d
 ### Interfaces Web
 - **API Gateway (Nginx)**: http://localhost:8080
 - **Adminer (DB Admin)**: http://localhost:8081
-  - **Usuário**: admin | **Senha**: 123
 - **RabbitMQ Management**: http://localhost:15672
-  - **Usuário**: admin | **Senha**: admin123
 
 ### APIs Diretas dos Microserviços
 - **ms-usuario**: http://localhost:9001/usuarios
@@ -41,9 +39,9 @@ docker-compose up --build -d
 - **Salas**: http://localhost:8080/api/salas
 - **Reservas**: http://localhost:8080/api/reservas
 
-## 📖 Swagger - Documentação Interativa da API
+## Swagger - Documentação Interativa da API
 
-### 🎯 **Como usar o Swagger "Try it out"**
+### **Como usar o Swagger "Try it out"**
 
 1. **Acesse o Swagger UI** de qualquer microserviço (URLs abaixo)
 2. **Selecione um endpoint** clicando sobre ele
@@ -52,7 +50,7 @@ docker-compose up --build -d
 5. **Clique em "Execute"** para testar a API em tempo real
 6. **Veja a resposta** com código HTTP, dados retornados e tempo de execução
 
-### 🔗 URLs do Swagger UI (com Try it out habilitado)
+### URLs do Swagger UI (com Try it out habilitado)
 - **ms-usuario**: http://localhost:9001/swagger-ui.html
   - Gerenciamento de usuários e validação de CPF
 - **ms-sala**: http://localhost:9002/swagger-ui.html
@@ -60,7 +58,7 @@ docker-compose up --build -d
 - **ms-reserva**: http://localhost:9003/swagger-ui.html
   - Sistema de reservas e agendamentos
 
-### 📄 Documentação OpenAPI JSON
+### Documentação OpenAPI JSON
 - **ms-usuario**: http://localhost:9001/api-docs
 - **ms-sala**: http://localhost:9002/api-docs  
 - **ms-reserva**: http://localhost:9003/api-docs
